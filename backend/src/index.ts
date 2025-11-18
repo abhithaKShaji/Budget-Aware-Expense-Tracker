@@ -14,7 +14,8 @@ connectDB();
 // --- CORS Configuration ---
 const allowedOrigins = [
   getEnvVariable("FRONT_END_URL"),
-  "http://localhost:5173"
+  "http://localhost:5173",
+  "https://budgetaware.netlify.app/"
 ];
 
 app.use(
