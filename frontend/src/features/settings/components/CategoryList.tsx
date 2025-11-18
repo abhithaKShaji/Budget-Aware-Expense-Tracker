@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import {type Category } from "../types";
 
 interface Props {

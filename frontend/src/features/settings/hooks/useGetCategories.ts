@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import {type Category } from "../types";
 
+const BASE_URL = "https://backend-q5x6.onrender.com/"
+
+
 export default function useGetCategories() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(false);
@@ -12,7 +15,7 @@ export default function useGetCategories() {
       setLoading(true);
       setError(null);
 
-      const res = await axios.get("http://localhost:3000/api/category");
+      const res = await axios.get(`${BASE_URL}/api/category`);
 
       if (res.data.success) {
         setCategories(res.data.categories);

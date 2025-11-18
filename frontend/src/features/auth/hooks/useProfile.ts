@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const BASE_URL = "https://backend-q5x6.onrender.com/"
+
 interface UserProfile {
   _id: string;
   name: string;
@@ -21,7 +23,7 @@ export const useProfile = () => {
 
       const token = localStorage.getItem("accessToken");
 
-      const res = await axios.get("http://localhost:3000/api/auth/profile", {
+      const res = await axios.get(`${BASE_URL}/api/auth/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

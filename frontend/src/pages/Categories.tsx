@@ -35,7 +35,7 @@ export default function Categories() {
     }
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = () => {
     // local delete until you build API
     // Later replace with DELETE API call
   };

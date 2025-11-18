@@ -19,7 +19,7 @@ const Dashboard: React.FC = () => {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [showExpenseModal, setShowExpenseModal] = useState(false);
 
-  const handleAddExpense = (categoryId: string, amount: number, date: string) => {
+  const handleAddExpense = (categoryId: string, amount: number) => {
     setCategories(prev =>
       prev.map(cat =>
         cat.id === categoryId ? { ...cat, spent: +(cat.spent + amount).toFixed(2) } : cat

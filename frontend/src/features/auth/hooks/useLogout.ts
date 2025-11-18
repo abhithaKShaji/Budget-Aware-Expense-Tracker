@@ -1,6 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 
+const BASE_URL = "https://backend-q5x6.onrender.com/"
+
+
 export const useLogout = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -14,7 +17,7 @@ export const useLogout = () => {
       const token = localStorage.getItem("accessToken");
 
       const res = await axios.post(
-        "http://localhost:3000/api/auth/logout",
+        `${BASE_URL}/api/auth/logout`,
         {},
         {
           headers: {

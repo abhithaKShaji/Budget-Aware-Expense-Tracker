@@ -2,6 +2,10 @@ import { useState } from "react";
 import axios from "axios";
 import {type Category } from "../types";
 
+const BASE_URL = "https://backend-q5x6.onrender.com/"
+
+
+
 interface CreateCategoryPayload {
   name: string;
   color: string;
@@ -18,7 +22,7 @@ export default function useCreateCategory() {
       setError(null);
 
       const res = await axios.post(
-        "http://localhost:3000/api/category",
+        `${BASE_URL}/api/category`,
         data
       );
 

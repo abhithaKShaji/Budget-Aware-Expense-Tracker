@@ -1,6 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 
+const BASE_URL = "https://backend-q5x6.onrender.com/"
+
+
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -12,7 +15,7 @@ export const useLogin = () => {
       setError(null);
       setMessage(null);
 
-      const res = await axios.post("http://localhost:3000/api/auth/login", {
+      const res = await axios.post(`${BASE_URL}/api/auth/login`, {
         email,
         password,
       });
