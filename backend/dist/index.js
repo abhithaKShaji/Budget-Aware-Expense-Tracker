@@ -8,6 +8,7 @@ const cors_1 = __importDefault(require("cors"));
 const db_1 = require("./config/db");
 const helpers_1 = require("./utils/helpers");
 const routes_1 = require("./routes");
+const expense_route_1 = __importDefault(require("./routes/expense.route"));
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3000;
 // --- Connect Database ---
@@ -43,6 +44,6 @@ app.get("/", (_req, res) => {
 });
 app.use("/api/auth", routes_1.authRoute);
 app.use("/api/category", routes_1.categoryRoute);
-app.use("/api/expense", routes_1.expenseRoute);
+app.use("/api/expense", expense_route_1.default);
 // --- Start Server ---
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

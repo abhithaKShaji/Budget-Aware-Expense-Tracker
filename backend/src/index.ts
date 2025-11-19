@@ -2,7 +2,9 @@ import express from "express";
 import cors from "cors";
 import { connectDB } from "./config/db";
 import { getEnvVariable } from "./utils/helpers";
-import { authRoute, categoryRoute, expenseRoute } from "./routes";
+import { authRoute, categoryRoute } from "./routes";
+import expenseRoute from "./routes/expense.route";
+
 
 
 const app = express();
