@@ -59,7 +59,7 @@ const Dashboard: React.FC = () => {
         {!loading && !error && categories.length > 0 && (
           <section className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {categories.map((category: Category) => (
-              <CategoryCard key={category.id} category={category} />
+              <CategoryCard key={category._id} category={category} />
             ))}
           </section>
         )}

@@ -17,14 +17,14 @@ const ExpenseFormModal: React.FC<Props> = ({
   onSubmit,
   saving
 }) => {
-  const [categoryId, setCategoryId] = useState<string>(categories[0]?.id ?? "");
+  const [categoryId, setCategoryId] = useState<string>(categories[0]?._id ?? "");
   const [amount, setAmount] = useState<string>("");
   const [date, setDate] = useState<string>(
     new Date().toISOString().slice(0, 10)
   );
 
   React.useEffect(() => {
-    if (categories.length && !categoryId) setCategoryId(categories[0].id);
+    if (categories.length && !categoryId) setCategoryId(categories[0]._id);
   }, [categories]);
 
   if (!open) return null;
@@ -69,7 +69,7 @@ const ExpenseFormModal: React.FC<Props> = ({
               disabled={saving}
             >
               {categories.map((c) => (
-                <option key={c.id} value={c.id}>
+                <option key={c._id} value={c._id}>
                   {c.name}
                 </option>
               ))}

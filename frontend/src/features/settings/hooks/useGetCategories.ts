@@ -21,7 +21,7 @@ export default function useGetCategories() {
           id: c._id,
           name: c.name,
           color: c.color,
-          monthlyLimit: c.monthlyLimit ?? c.budget ?? 0, // fallback
+          monthlyLimit: c.monthlyLimit ?? c.budget ?? 0, 
           spent: c.spent ?? 0,
         }));
 

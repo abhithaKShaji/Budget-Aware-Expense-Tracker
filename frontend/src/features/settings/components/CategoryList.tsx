@@ -24,7 +24,7 @@ export default function CategoryList({ categories, onEdit, onDelete }: Props) {
 
           <tbody>
             {categories.map((cat) => (
-              <tr key={cat.id} className="border-b">
+              <tr key={cat._id} className="border-b">
                 <td className="p-3">
                   <span
                     className="inline-block w-4 h-4 rounded-full"
@@ -43,7 +43,7 @@ export default function CategoryList({ categories, onEdit, onDelete }: Props) {
                     Edit
                   </button>
                   <button
-                    onClick={() => onDelete(cat.id)}
+                    onClick={() => onDelete(cat._id)}
                     className="px-3 py-1 text-white bg-red-500 rounded"
                   >
                     Delete
@@ -59,7 +59,7 @@ export default function CategoryList({ categories, onEdit, onDelete }: Props) {
       <div className="md:hidden space-y-4">
         {categories.map((cat) => (
           <div
-            key={cat.id}
+            key={cat._id}
             className="p-4 bg-white rounded shadow flex justify-between items-center"
           >
             <div>
@@ -81,7 +81,7 @@ export default function CategoryList({ categories, onEdit, onDelete }: Props) {
                 Edit
               </button>
               <button
-                onClick={() => onDelete(cat.id)}
+                onClick={() => onDelete(cat._id)}
                 className="px-3 py-1 text-white bg-red-500 rounded text-sm"
               >
                 Del
