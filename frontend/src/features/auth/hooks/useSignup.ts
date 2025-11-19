@@ -15,7 +15,7 @@ export const useSignup = () => {
       setError(null);
       setMessage(null);
 
-      const res = await axios.post(`${BASE_URL}/api/auth/signup`,
+      const res = await axios.post(`${BASE_URL}api/auth/signup`,
         {
           name,
           email,

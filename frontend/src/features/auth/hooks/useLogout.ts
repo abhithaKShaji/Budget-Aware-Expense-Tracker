@@ -17,7 +17,7 @@ export const useLogout = () => {
       const token = localStorage.getItem("accessToken");
 
       const res = await axios.post(
-        `${BASE_URL}/api/auth/logout`,
+        `${BASE_URL}api/auth/logout`,
         {},
         {
           headers: {

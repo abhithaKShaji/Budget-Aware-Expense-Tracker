@@ -22,7 +22,7 @@ export default function useCreateCategory() {
       setError(null);
 
       const res = await axios.post(
-        `${BASE_URL}/api/category`,
+        `${BASE_URL}api/category`,
         data
       );
 

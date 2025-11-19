@@ -23,7 +23,7 @@ export const useProfile = () => {
 
       const token = localStorage.getItem("accessToken");
 
-      const res = await axios.get(`${BASE_URL}/api/auth/profile`, {
+      const res = await axios.get(`${BASE_URL}api/auth/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

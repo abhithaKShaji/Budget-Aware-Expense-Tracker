@@ -15,7 +15,7 @@ export default function useGetCategories() {
       setLoading(true);
       setError(null);
 
-      const res = await axios.get(`${BASE_URL}/api/category`);
+      const res = await axios.get(`${BASE_URL}api/category`);
 
       if (res.data.success) {
         setCategories(res.data.categories);
