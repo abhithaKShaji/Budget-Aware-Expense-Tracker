@@ -15,7 +15,7 @@ connectDB();
 const allowedOrigins = [
   getEnvVariable("FRONT_END_URL"),
   "http://localhost:5173",
-  "https://budgetaware.netlify.app/"
+  "https://budgetaware.netlify.app"
 ];
 
 app.use(

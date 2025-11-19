@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 3000;
 const allowedOrigins = [
     (0, helpers_1.getEnvVariable)("FRONT_END_URL"),
     "http://localhost:5173",
-    "https://budgetaware.netlify.app/"
+    "https://budgetaware.netlify.app"
 ];
 app.use((0, cors_1.default)({
     origin: function (origin, callback) {
