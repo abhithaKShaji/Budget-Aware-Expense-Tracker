@@ -1,60 +1,93 @@
-
 import React, { useState } from "react";
 import HeaderMonthSelector from "../features/dashboard/components/MonthSelector";
 import CategoryCard from "../features/dashboard/components/CategoryCard";
 import AddExpenseFAB from "../features/dashboard/components/AddExpenseFAB";
 import ExpenseFormModal from "../features/dashboard/components/ExpenseFormModal";
-import {type Category } from "../features/dashboard/types";
-import { monthYearLabel } from "../utils/date";
 
-const initialCategories: Category[] = [
-  { id: "1", name: "Food", color: "#f97316", budget: 5000, spent: 2220 },
-  { id: "2", name: "Rent", color: "#06b6d4", budget: 20000, spent: 15000 },
-  { id: "3", name: "Transport", color: "#a78bfa", budget: 5000, spent: 6120 },
-  { id: "4", name: "Entertainment", color: "#f43f5e", budget:5000, spent: 3000 },
-];
+import { monthYearLabel } from "../utils/date";
+import useGetCategories from "../features/settings/hooks/useGetCategories";
+import useCreateExpense from "../features/dashboard/hooks/useCreateExpense";
+
+import { type Category } from "../features/settings/types";
+
 
 const Dashboard: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>(initialCategories);
-  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
+  const { categories, loading, error, refetch } = useGetCategories();
+  const { createExpense, loading: expenseLoading } = useCreateExpense();
+
+  const [currentMonth, setCurrentMonth] = useState(new Date());
   const [showExpenseModal, setShowExpenseModal] = useState(false);
 
-  const handleAddExpense = (categoryId: string, amount: number) => {
-    setCategories(prev =>
-      prev.map(cat =>
-        cat.id === categoryId ? { ...cat, spent: +(cat.spent + amount).toFixed(2) } : cat
-      )
-    );
-    setShowExpenseModal(false);
+
+  const handleAddExpense = async (
+    categoryId: string,
+    amount: number,
+    date: string
+  ) => {
+    const result = await createExpense(categoryId, amount, date);
+
+    if (result) {
+      await refetch();
+      setShowExpenseModal(false);
+    }
   };
 
   return (
     <div className="min-h-screen p-4 md:p-8 bg-app text-slate-100">
       <div className="max-w-7xl mx-auto">
+
+        {/* Month selector */}
         <HeaderMonthSelector
           currentMonth={currentMonth}
-          onPrev={() => setCurrentMonth(d => new Date(d.getFullYear(), d.getMonth() - 1, 1))}
-          onNext={() => setCurrentMonth(d => new Date(d.getFullYear(), d.getMonth() + 1, 1))}
+          onPrev={() =>
+            setCurrentMonth((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1))
+          }
+          onNext={() =>
+            setCurrentMonth((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1))
+          }
         />
 
-        <section className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map(cat => (
-            <CategoryCard key={cat.id} category={cat} />
-          ))}
-        </section>
+        {/* Categories */}
+        {loading && (
+          <div className="mt-6 text-center text-slate-300">Loading categories...</div>
+        )}
 
+        {error && (
+          <div className="mt-6 text-center text-rose-400">{error}</div>
+        )}
+
+        {!loading && !error && categories.length > 0 && (
+          <section className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {categories.map((category: Category) => (
+              <CategoryCard key={category.id} category={category} />
+            ))}
+          </section>
+        )}
+
+        {!loading && !error && categories.length === 0 && (
+          <div className="mt-6 text-center text-slate-400">
+            No categories found. Add one in settings.
+          </div>
+        )}
+
+        {/* Footer Info */}
         <div className="mt-8 text-sm text-slate-300">
           Showing summary for <strong>{monthYearLabel(currentMonth)}</strong>
         </div>
       </div>
 
+      {/* Floating Add Expense Button */}
       <AddExpenseFAB onOpen={() => setShowExpenseModal(true)} />
-      <ExpenseFormModal
-        open={showExpenseModal}
-        onClose={() => setShowExpenseModal(false)}
-        categories={categories}
-        onSubmit={handleAddExpense}
-      />
+
+      {/* Expense Modal */}
+     <ExpenseFormModal
+  open={showExpenseModal}
+  onClose={() => setShowExpenseModal(false)}
+  categories={categories}
+  onSubmit={handleAddExpense}
+  saving={expenseLoading}       
+/>
+
     </div>
   );
 };

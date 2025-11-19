@@ -1,19 +1,27 @@
-// src/features/expense/ExpenseFormModal.tsx
 import React, { useState } from "react";
-import { X } from "lucide-react";
-import { type Category } from "../types";
+import { X, Loader2 } from "lucide-react";
+import { type Category } from "../../settings/types";
 
 interface Props {
   open: boolean;
   onClose: () => void;
   categories: Category[];
   onSubmit: (categoryId: string, amount: number, date: string) => void;
+  saving: boolean; // <-- NEW
 }
 
-const ExpenseFormModal: React.FC<Props> = ({ open, onClose, categories, onSubmit }) => {
+const ExpenseFormModal: React.FC<Props> = ({
+  open,
+  onClose,
+  categories,
+  onSubmit,
+  saving
+}) => {
   const [categoryId, setCategoryId] = useState<string>(categories[0]?.id ?? "");
   const [amount, setAmount] = useState<string>("");
-  const [date, setDate] = useState<string>(new Date().toISOString().slice(0, 10));
+  const [date, setDate] = useState<string>(
+    new Date().toISOString().slice(0, 10)
+  );
 
   React.useEffect(() => {
     if (categories.length && !categoryId) setCategoryId(categories[0].id);
@@ -23,14 +31,15 @@ const ExpenseFormModal: React.FC<Props> = ({ open, onClose, categories, onSubmit
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (saving) return; // prevents double submits
+
     const amt = parseFloat(amount);
     if (!categoryId || isNaN(amt) || amt <= 0) {
       alert("Please select category and enter a valid amount.");
       return;
     }
+
     onSubmit(categoryId, amt, date);
-    setAmount("");
-    setDate(new Date().toISOString().slice(0, 10));
   };
 
   return (
@@ -50,14 +59,16 @@ const ExpenseFormModal: React.FC<Props> = ({ open, onClose, categories, onSubmit
         </div>
 
         <div className="space-y-4">
+          {/* Category */}
           <div>
             <label className="block text-sm text-slate-300 mb-1">Category</label>
             <select
               className="w-full bg-slate-800 rounded p-2"
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
+              disabled={saving}
             >
-              {categories.map(c => (
+              {categories.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
                 </option>
@@ -65,6 +76,7 @@ const ExpenseFormModal: React.FC<Props> = ({ open, onClose, categories, onSubmit
             </select>
           </div>
 
+          {/* Amount */}
           <div>
             <label className="block text-sm text-slate-300 mb-1">Amount</label>
             <input
@@ -75,9 +87,11 @@ const ExpenseFormModal: React.FC<Props> = ({ open, onClose, categories, onSubmit
               onChange={(e) => setAmount(e.target.value)}
               className="w-full bg-slate-800 rounded p-2"
               placeholder="0.00"
+              disabled={saving}
             />
           </div>
 
+          {/* Date */}
           <div>
             <label className="block text-sm text-slate-300 mb-1">Date</label>
             <input
@@ -85,15 +99,36 @@ const ExpenseFormModal: React.FC<Props> = ({ open, onClose, categories, onSubmit
               value={date}
               onChange={(e) => setDate(e.target.value)}
               className="w-full bg-slate-800 rounded p-2"
+              disabled={saving}
             />
           </div>
 
+          {/* Buttons */}
           <div className="flex items-center justify-end gap-3">
-            <button type="button" onClick={onClose} className="px-3 py-2 rounded bg-white/6">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-3 py-2 rounded bg-white/6"
+              disabled={saving}
+            >
               Cancel
             </button>
-            <button type="submit" className="px-4 py-2 rounded bg-indigo-600 hover:bg-indigo-500">
-              Save
+
+            <button
+              type="submit"
+              disabled={saving}
+              className={`px-4 py-2 rounded bg-indigo-600 hover:bg-indigo-500 flex items-center gap-2 ${
+                saving ? "opacity-70 cursor-not-allowed" : ""
+              }`}
+            >
+              {saving ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                "Save"
+              )}
             </button>
           </div>
         </div>

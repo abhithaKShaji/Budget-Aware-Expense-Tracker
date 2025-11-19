@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { connectDB } from "./config/db";
 import { getEnvVariable } from "./utils/helpers";
-import { authRoute, categoryRoute } from "./routes";
+import { authRoute, categoryRoute, expenseRoute } from "./routes";
 
 
 const app = express();
@@ -15,24 +15,24 @@ connectDB();
 const allowedOrigins = [
   getEnvVariable("FRONT_END_URL"),
   "http://localhost:5173",
-  "https://budgetaware.netlify.app/"
+  "https://budgetaware.netlify.app"
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // allow requests with no origin (like mobile apps, curl)
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
       }
     },
-    credentials: true, // 🔥 this sends Access-Control-Allow-Credentials: true
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 
 // --- Handle Preflight Requests ---
 app.options(/.*/, cors());
@@ -48,10 +48,8 @@ app.get("/", (_req, res) => {
 
 app.use("/api/auth", authRoute);
 app.use("/api/category", categoryRoute);
-//app.use("/api/cart", cartRoute);
-//app.use("/api/checkout", checkoutRoute);
-//app.use("/api/order", orderRoute);
-//nnnapp.use("/api/address", addressRoute);
+app.use("/api/expense", expenseRoute);
+
 
 // --- Start Server ---
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

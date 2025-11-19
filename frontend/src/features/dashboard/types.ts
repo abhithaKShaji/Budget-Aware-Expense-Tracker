@@ -1,6 +1,6 @@
 // src/types.ts
 export interface Category {
-  id: string;
+  _id: string;
   name: string;
   color: string; // tailwind color or hex
   budget: number; // monthly limit

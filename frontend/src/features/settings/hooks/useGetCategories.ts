@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import {type Category } from "../types";
+import { type Category } from "../types";
 
-const BASE_URL = "https://backend-q5x6.onrender.com/"
-
+const BASE_URL = "https://backend-q5x6.onrender.com/";
 
 export default function useGetCategories() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -18,7 +17,15 @@ export default function useGetCategories() {
       const res = await axios.get(`${BASE_URL}api/category`);
 
       if (res.data.success) {
-        setCategories(res.data.categories);
+        const formatted: Category[] = res.data.categories.map((c: any) => ({
+          id: c._id,
+          name: c.name,
+          color: c.color,
+          monthlyLimit: c.monthlyLimit ?? c.budget ?? 0, // fallback
+          spent: c.spent ?? 0,
+        }));
+
+        setCategories(formatted);
       } else {
         setError("Failed to load categories");
       }
