@@ -16,10 +16,11 @@ const PORT = process.env.PORT || 3000;
 const allowedOrigins = [
     (0, helpers_1.getEnvVariable)("FRONT_END_URL"),
     "http://localhost:5173",
-    "https://budgetaware.netlify.app"
+    "https://budgetaware.netlify.app/"
 ];
 app.use((0, cors_1.default)({
     origin: function (origin, callback) {
+        // allow requests with no origin (like mobile apps, curl)
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         }
@@ -27,7 +28,7 @@ app.use((0, cors_1.default)({
             callback(new Error("Not allowed by CORS"));
         }
     },
-    credentials: true,
+    credentials: true, //  this sends Access-Control-Allow-Credentials: true
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
 }));

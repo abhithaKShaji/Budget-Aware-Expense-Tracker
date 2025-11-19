@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {type Category } from "../types";
+import {type Category } from "../../settings/types";
 
 interface Props {
   open: boolean;
@@ -70,10 +70,15 @@ export default function CategoryModal({
               Cancel
             </button>
 
-       <button
+   <button
   onClick={() =>
     onSave(
-      { name, color, monthlyLimit: budget },
+      {
+        name,
+        color,
+        monthlyLimit: budget,
+        spent: editingCategory ? editingCategory.spent : 0
+      },
       editingCategory?._id
     )
   }
@@ -82,6 +87,7 @@ export default function CategoryModal({
 >
   {loading ? "Saving..." : editingCategory ? "Update" : "Add"}
 </button>
+
 
           </div>
         </div>
